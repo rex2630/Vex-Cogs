@@ -1,13 +1,10 @@
 import asyncio
 import io
 from heapq import nsmallest  # this is standard library
-from typing import TYPE_CHECKING, Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple
 
 import discord
 import pandas as pd
-
-if TYPE_CHECKING:
-    pass
 
 
 async def plot(sr: pd.Series) -> Tuple[discord.File, Optional[float]]:
@@ -53,7 +50,14 @@ def _plot(sr: pd.Series) -> Tuple[discord.File, Optional[float]]:
     for val in values_to_annotate:
         # find the corresponding date for this value (first match)
         date = next(k for k, v in low_values.items() if v == val)
-        ax.annotate(f"{val}%\n{date.strftime('%d %b')}", xy=(date, val), xytext=(0, 8), textcoords="offset points", ha="center", fontsize=9)
+        ax.annotate(
+            f"{val}%\n{date.strftime('%d %b')}",
+            xy=(date, val),
+            xytext=(0, 8),
+            textcoords="offset points",
+            ha="center",
+            fontsize=9,
+        )
 
     labelled_pc = max(low_values.values()) if low_values else None
 
